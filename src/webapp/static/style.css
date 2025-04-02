@@ -1,0 +1,67 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2 {
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+}
+
+#status {
+    margin-bottom: 15px;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    display: inline-block;
+}
+
+table#alerts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+#alerts-table th, #alerts-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+#alerts-table th {
+    background-color: #007bff;
+    color: white;
+    position: sticky; /* Keep header visible on scroll */
+    top: 0;
+}
+
+#alerts-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#alerts-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.alert-row.threat {
+    background-color: #f8d7da !important; /* Light red for threats */
+    color: #721c24;
+    font-weight: bold;
+}
+
+.alert-row.threat td {
+    border-color: #f5c6cb;
+}
+
+.message-cell {
+    max-width: 400px; /* Limit width of message cell */
+    word-wrap: break-word; /* Wrap long messages */
+}

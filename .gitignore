@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+*.env
+
+# Data files (if large or private)
+data/*
+!data/.gitkeep # Keep the directory
+
+# Model files
+models/*
+!models/.gitkeep # Keep the directory
+
+# Logs
+*.log
+!snort.log # Keep the example log for testing
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

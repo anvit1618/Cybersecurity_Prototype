@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn
+tensorflow  # or pytorch, adjust NN code if using pytorch
+Flask
+Flask-SocketIO
+requests    # For alert processor to send alerts to Flask
+joblib      # For saving/loading sklearn models
+gunicorn    # Optional: for running Flask app more robustly
+python-dotenv # Optional: For managing environment variables
+pyyaml
+flask_httpauth

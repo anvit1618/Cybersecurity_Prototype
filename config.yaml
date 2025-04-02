@@ -1,0 +1,13 @@
+paths:
+  data_dir: "data/"
+  model_dir: "models/"
+  snort_log: "snort.log"
+
+webapp:
+  host: "127.0.0.1"
+  port: 5000
+  secret_key: "replace-this-with-a-secure-key"
+
+logging:
+  log_file: "cybersecurity.log"
+  log_level: "INFO"

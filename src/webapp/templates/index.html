@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Threat Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Include Socket.IO client library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>AI-Powered Threat Detection Dashboard (Prototype)</h1>
+    <div id="status">Connecting...</div>
+
+    <h2>Real-time Alerts</h2>
+    <table id="alerts-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Source IP</th>
+                <th>Source Port</th>
+                <th>Dest IP</th>
+                <th>Dest Port</th>
+                <th>Protocol</th>
+                <th>Message</th>
+                <th>Prediction</th>
+                <th>Probability</th>
+            </tr>
+        </thead>
+        <tbody id="alerts-body">
+            <!-- Alerts will be dynamically added here -->
+            <!-- Pre-populate with alerts passed from Flask on initial load -->
+            {% for alert in alerts %}
+            <tr class="alert-row threat"> <!-- Assuming all passed alerts are threats for initial load -->
+                <td>{{ alert.timestamp }}</td>
+                <td>{{ alert.src_ip }}</td>
+                <td>{{ alert.src_port }}</td>
+                <td>{{ alert.dst_ip }}</td>
+                <td>{{ alert.dst_port }}</td>
+                <td>{{ alert.protocol }}</td>
+                <td class="message-cell">{{ alert.message }}</td>
+                <td>{{ alert.prediction }}</td>
+                <td>{{ alert.probability }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Connect to the Socket.IO server
+        // Adjust the URL if your Flask app runs elsewhere
+        const socket = io(); // Defaults to connecting to the server that served the page
+
+        const statusDiv = document.getElementById('status');
+        const alertsTableBody = document.getElementById('alerts-body');
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+            statusDiv.textContent = 'Status: Connected';
+            statusDiv.style.color = 'green';
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+            statusDiv.textContent = 'Status: Disconnected';
+            statusDiv.style.color = 'red';
+        });
+
+        socket.on('connect_error', (err) => {
+            console.error('Connection Error:', err);
+            statusDiv.textContent = 'Status: Connection Error';
+            statusDiv.style.color = 'red';
+        });
+
+        // Listen for the 'new_alert' event from the server
+        socket.on('new_alert', (data) => {
+            console.log('New alert received:', data);
+
+            // Create a new table row for the alert
+            const newRow = document.createElement('tr');
+            newRow.classList.add('alert-row');
+            if (data.prediction && data.prediction.toLowerCase() === 'attack') {
+                 newRow.classList.add('threat');
+            }
+
+            // Populate the row cells
+            newRow.innerHTML = `
+                <td>${data.timestamp || 'N/A'}</td>
+                <td>${data.src_ip || 'N/A'}</td>
+                <td>${data.src_port || 'N/A'}</td>
+                <td>${data.dst_ip || 'N/A'}</td>
+                <td>${data.dst_port || 'N/A'}</td>
+                <td>${data.protocol || 'N/A'}</td>
+                <td class="message-cell">${data.message || 'N/A'}</td>
+                <td>${data.prediction || 'N/A'}</td>
+                <td>${data.probability || 'N/A'}</td>
+            `;
+
+            // Add the new row to the top of the table body
+            alertsTableBody.insertBefore(newRow, alertsTableBody.firstChild);
+
+            // Optional: Limit the number of rows displayed
+            const maxRows = 50;
+            while (alertsTableBody.rows.length > maxRows) {
+                alertsTableBody.deleteRow(alertsTableBody.rows.length - 1);
+            }
+        });
+
+    </script>
+</body>
+</html>
